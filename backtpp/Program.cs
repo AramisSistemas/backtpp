@@ -70,6 +70,7 @@ builder.Services.AddAuthentication(x =>
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IOperationService, OperationService>();
+builder.Services.AddScoped<ICompositionService, CompositionService>();
 builder.Services.AddScoped<ILoggService, LoggService>();
 builder.Services.AddScoped<IStoreProcedure, StoreProcedure>();
 builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();

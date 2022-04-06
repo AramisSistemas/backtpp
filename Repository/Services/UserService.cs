@@ -197,9 +197,9 @@ namespace Repository.Services
                 return null;
             }
 
-            if (!string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrWhiteSpace(npassword))
             {
-                CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                CreatePasswordHash(npassword, out byte[] passwordHash, out byte[] passwordSalt);
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;

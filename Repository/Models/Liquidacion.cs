@@ -15,6 +15,7 @@ namespace Repository.Models
         public bool Pagado { get; set; }
         public string? Operador { get; set; }
         public string? OperadorConfirma { get; set; }
+        public string? Cbu { get; set; }
 
         public virtual OpEmpleado EmpleadoNavigation { get; set; } = null!;
         public virtual OperacionManiobra OperacionNavigation { get; set; } = null!;

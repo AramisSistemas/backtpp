@@ -22,7 +22,7 @@ namespace Repository.Services
                 Detalle = detalle,
                 Modulo = modulo,
                 Tipo = tipo,
-                Fecha = System.DateTime.Now,
+                Fecha = System.DateTime.Now.AddHours(-3),
                 Operador = operador
             };
             UserLog? logg = _mapper.Map<UserLog>(loggModel);

@@ -168,6 +168,10 @@ namespace Repository.Models
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Cbu)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.Llave)
                     .HasColumnType("decimal(18, 2)")
                     .HasDefaultValueSql("((1))");
@@ -327,7 +331,7 @@ namespace Repository.Models
                 entity.Property(e => e.Ciudad)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasDefaultValueSql("('')");
+                    .HasDefaultValueSql("(' ')");
 
                 entity.Property(e => e.Domicilio)
                     .HasMaxLength(50)
@@ -348,12 +352,16 @@ namespace Repository.Models
 
                 entity.Property(e => e.Osocial).HasColumnName("OSocial");
 
-                entity.Property(e => e.Saldo).HasColumnType("decimal(18, 2)");
+                entity.Property(e => e.Sexo)
+                    .HasMaxLength(1)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('M')")
+                    .IsFixedLength();
 
                 entity.Property(e => e.Telefono)
                     .HasMaxLength(50)
                     .IsUnicode(false)
-                    .HasDefaultValueSql("('')");
+                    .HasDefaultValueSql("(' ')");
 
                 entity.HasOne(d => d.OsocialNavigation)
                     .WithMany(p => p.OpEmpleados)
@@ -373,6 +381,10 @@ namespace Repository.Models
                 entity.Property(e => e.Fin).HasColumnType("datetime");
 
                 entity.Property(e => e.Monto).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Operador)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Total).HasColumnType("decimal(18, 2)");
 
@@ -479,6 +491,22 @@ namespace Repository.Models
             modelBuilder.Entity<SystemOption>(entity =>
             {
                 entity.HasNoKey();
+
+                entity.Property(e => e.Contacto)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Cuit)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Domicilio)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Razon)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Turno>(entity =>

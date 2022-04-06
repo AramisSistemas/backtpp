@@ -21,12 +21,12 @@ namespace Repository.Models
         public DateTime Nacimiento { get; set; }
         public bool Conyuge { get; set; }
         public int Hijos { get; set; }
-        public decimal Saldo { get; set; }
         public string Cbu { get; set; } = null!;
         public long? CuilCbu { get; set; }
         public bool Activo { get; set; }
         public int? Puesto { get; set; }
         public DateTime Ingreso { get; set; }
+        public string Sexo { get; set; } = null!;
 
         public virtual ObraSocial OsocialNavigation { get; set; } = null!;
         public virtual ICollection<Liquidacion> Liquidacions { get; set; }

@@ -9,5 +9,6 @@ namespace Repository.Modelsdto.Operations
         public IEnumerable<LiquidacionModel> LiquidacionModel { get; set; }
         public IEnumerable<LiquidacionDetalleModel> LiquidacionDetalleModel { get; set; }
         public IEnumerable<EmpresaDto> EmpresaDtos { get; set; }
+        public IEnumerable<LiquidacionesPagos> LiquidacionesPagos { get; set; }
     }
 }

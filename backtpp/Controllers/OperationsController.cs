@@ -245,12 +245,38 @@ namespace backtpp.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         [Route("LiquidacionesByOp")]
         public IActionResult LiquidacionesByOp(long operacion)
         {
             LiquidacionesByOp? data = _operationService.LiquidacionesByOp(operacion);
             return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("LiquidacionesPayPending")]
+        public IActionResult LiquidacionesPayPending()
+        {
+            LiquidacionesByOp? data = _operationService.LiquidacionesPayPending();
+            return Ok(data);
+        }
+
+        [HttpPost]
+        [Route("LiquidacionesPay")]
+        public IActionResult LiquidacionesPay([FromBody] List<LiquidacionPay> liquidacionPays)
+        {
+           
+            try
+            {
+                var data = _operationService.LiquidacionesPay(liquidacionPays); 
+                _loggService.Log($"Lote {data.First().Lote} Pagado. Cantidad {data.First().Cantidad}", "Pays", "Update", _userName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratanto de realizar Pagos", "Pays", "Update", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpPut]

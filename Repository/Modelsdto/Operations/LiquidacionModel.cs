@@ -23,5 +23,10 @@ namespace Repository.Modelsdto.Operations
         public decimal Neto { get; set; }
         public string EnLetras { get; set; }
         public string Cbu { get; set; }
+
+        // Para Pays
+        public DateTime Fecha { get; set; }
+        public string Turno { get; set; }
+        public string Destino { get; set; }
     }
 }

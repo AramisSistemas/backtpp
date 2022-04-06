@@ -58,7 +58,7 @@ namespace backtpp.Controllers
                 return BadRequest(new { message = "Logueo Incorrecto" });
             }
 
-            if (user.EndOfLife < DateTime.Now)
+            if (user.EndOfLife < DateTime.Now.AddHours(-3))
             {
                 _loggService.Log("Logueo Incorrecto. Clave Vencida", "Users", "Loguin", model.Username);
                 return BadRequest(new { message = user.FirstName + " debes renovar tus datos" });
@@ -139,7 +139,7 @@ namespace backtpp.Controllers
                 return BadRequest(new { message = "Logueo Incorrecto" });
             }
 
-            if (user.EndOfLife < DateTime.Now)
+            if (user.EndOfLife < DateTime.Now.AddHours(-3))
             {
                 _loggService.Log("Logueo y cambio Pass Incorrecto. Clave Vencida", "Users", "Loguin", model.Username);
                 return BadRequest(new { message = user.FirstName + " debes renovar tus datos" });

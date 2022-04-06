@@ -10,14 +10,14 @@ namespace Repository.Services
     public class OperationService : IOperationService
     {
         private readonly IStoreProcedure _storeProcedure;
-        
+
         private readonly tppContext _context;
         public OperationService(IStoreProcedure storeProcedure, tppContext context)
         {
             _storeProcedure = storeProcedure;
             _context = context;
         }
-       
+
         public Operacion Add(Operacion operacion)
         {
             throw new NotImplementedException();
@@ -43,7 +43,7 @@ namespace Repository.Services
             }
             return lst;
         }
-        
+
         public IEnumerable<ManiobraModel> GetManiobrasActivas(bool? finalizada = false)
         {
             List<SqlParameter> Params = new();
@@ -242,14 +242,14 @@ namespace Repository.Services
             }
         }
 
-        public  LiquidacionesByOp  LiquidacionesByOp(long operacion)
+        public LiquidacionesByOp LiquidacionesByOp(long operacion)
         {
             try
             {
                 List<SqlParameter> Params = new();
-                Params.Add(new SqlParameter("@operacion", operacion)); 
-                DataSet  ds = _storeProcedure.SpWhithDataSetPure("LiquidacionesByOp", Params);
-                LiquidacionesByOp  lst = new();
+                Params.Add(new SqlParameter("@operacion", operacion));
+                DataSet ds = _storeProcedure.SpWhithDataSetPure("LiquidacionesByOp", Params);
+                LiquidacionesByOp lst = new();
                 List<OperationModel> operationModels = new();
                 List<OperacionManiobraModel> maniobraModels = new();
                 List<LiquidacionModel> liquidacionModels = new();
@@ -306,8 +306,8 @@ namespace Repository.Services
                             Haberes = (decimal)rowLiq["Haberes"],
                             Descuentos = (decimal)rowLiq["Descuentos"],
                             Remunerativos = (decimal)rowLiq["Remunerativos"],
-                            NoRemunerativos=(decimal)rowLiq["NoRemunerativos"],
-                            Neto=(decimal)rowLiq["Neto"],
+                            NoRemunerativos = (decimal)rowLiq["NoRemunerativos"],
+                            Neto = (decimal)rowLiq["Neto"],
                             EnLetras = rowLiq["EnLetras"].ToString(),
                             Cbu = rowLiq["Cbu"].ToString(),
                         });
@@ -331,7 +331,7 @@ namespace Repository.Services
                     foreach (DataRow rowEmp in dtEmp.Rows)
                     {
                         empresaDtos.Add(new EmpresaDto()
-                        { 
+                        {
                             Contacto = rowEmp["Contacto"].ToString(),
                             Cuit = rowEmp["Cuit"].ToString(),
                             Razon = rowEmp["Razon"].ToString(),
@@ -356,8 +356,6 @@ namespace Repository.Services
         {
             try
             {
-
-
                 List<SqlParameter> Params = new();
                 if (liquidacion != null)
                 {
@@ -433,6 +431,109 @@ namespace Repository.Services
                 bool res = _storeProcedure.ExecuteNonQuery("ManiobrasFinalizar", Params);
 
                 return res;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public LiquidacionesByOp LiquidacionesPayPending()
+        {
+            try
+            {
+                DataSet ds = _storeProcedure.SpWhithDataSetPure("EmpleadosPagosPendientes");
+                LiquidacionesByOp lst = new();
+
+                List<LiquidacionModel> liquidacionModels = new();
+                List<EmpresaDto> empresaDtos = new();
+                List<LiquidacionesPagos> liquidacionPagos = new();
+
+                DataTable dtLiq = new();
+                DataTable dtPagos = new();
+                DataTable dtEmp = new();
+
+                dtLiq = ds.Tables[0];
+                dtPagos = ds.Tables[1];
+                dtEmp = ds.Tables[2];
+
+                foreach (DataRow rowLiq in dtLiq.Rows)
+                {
+                    liquidacionModels.Add(new LiquidacionModel()
+                    {
+                        Liquidacion = (long)rowLiq["Liquidacion"],
+                        IdEmpleado = (long)rowLiq["IdEmpleado"],
+                        Cuit = (long)rowLiq["Cuit"],
+                        Nombre = rowLiq["Nombre"].ToString(),
+                        Puesto = rowLiq["Puesto"].ToString(),
+                        Llave = (decimal)rowLiq["Llave"],
+                        Neto = (decimal)rowLiq["Neto"],
+                        Cbu = rowLiq["Cbu"].ToString(),
+                        Fecha = (DateTime)rowLiq["Fecha"],
+                        Turno = rowLiq["Turno"].ToString(),
+                        Destino = rowLiq["Destino"].ToString(),
+                    });
+                };
+
+                foreach (DataRow rowPagos in dtPagos.Rows)
+                {
+                    liquidacionPagos.Add(new LiquidacionesPagos()
+                    {
+                        IdEmpleado = (long)rowPagos["IdEmpleado"],
+                        Cuit = rowPagos["Cuit"].ToString(),
+                        Nombre = rowPagos["Nombre"].ToString(),
+                        Cbu = rowPagos["Cbu"].ToString(),
+                        Total = (decimal)rowPagos["Total"],
+                    });
+                };
+
+                foreach (DataRow rowEmp in dtEmp.Rows)
+                {
+                    empresaDtos.Add(new EmpresaDto()
+                    {
+                        Cuit = rowEmp["Cuit"].ToString(),
+                    });
+                };
+
+                lst.LiquidacionModel = liquidacionModels;
+                lst.LiquidacionesPagos = liquidacionPagos;
+                lst.EmpresaDtos = empresaDtos;
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<LiquidacionesLotePago> LiquidacionesPay(List<LiquidacionPay> liquidaciones)
+        {
+            try
+            {
+                List<SqlParameter> Params = new();
+                if (liquidaciones != null)
+                {
+                    SqlParameter Param = new("@liquidacion", AuxDataTable.ToDataTable(liquidaciones))
+                    {
+                        TypeName = "LiquidacionesTable",
+                        SqlDbType = SqlDbType.Structured
+                    };
+                    Params.Add(Param);
+                };
+                var res = _storeProcedure.SpWhithDataSet("LiquidacionesPay", Params);
+                List<LiquidacionesLotePago> lst = new();
+                foreach (DataRow rowPagos in res.Rows)
+                {
+                    lst.Add(new LiquidacionesLotePago()
+                    {
+                        Cantidad = (int)rowPagos["Cantidad"],
+                        Cuit = rowPagos["Cuit"].ToString(),
+                        Lote = (long)rowPagos["Lote"],
+
+                    });
+                };
+                return lst;
 
             }
             catch (Exception ex)

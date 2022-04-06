@@ -1,5 +1,6 @@
 using AutoMapper;
 using Repository.Models;
+using Repository.Modelsdto.Compositions;
 using Repository.Modelsdto.Empleados;
 using Repository.Modelsdto.Operations;
 using Repository.Modelsdto.Users;
@@ -21,6 +22,12 @@ namespace backtpp.Helpers
             CreateMap<TurnoModel, Turno>().ReverseMap();
             CreateMap<LoggModel, UserLog>().ReverseMap();
             CreateMap<OpEmpleado, EmpleadosDto>().ReverseMap();
+            CreateMap<OpEmpleado, EmpleadosUpdate>().ReverseMap();
+            CreateMap<OpAgrupacion, AgrupacionDto>().ReverseMap();
+            CreateMap<OpManiobra, ManiobraDto>().ReverseMap();
+            CreateMap<OpPuesto, PuestoDto>().ReverseMap();
+            CreateMap<Esquema, EsquemaDto>().ReverseMap();
+            CreateMap<OpComposicion, CompositionDto>().ReverseMap();
         }
     }
 }

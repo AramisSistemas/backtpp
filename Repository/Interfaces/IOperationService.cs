@@ -23,6 +23,8 @@ namespace Repository.Interfaces
         bool LiquidacionesDelete(long liquidacion);
         LiquidacionesByOp LiquidacionesByOp(long operacion);
         bool LiquidacionesLLave(long operacion, int puesto, int llave);
+        LiquidacionesByOp LiquidacionesPayPending();
+        IEnumerable<LiquidacionesLotePago> LiquidacionesPay(List<LiquidacionPay> liquidaciones);
 
     }
 }
