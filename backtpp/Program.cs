@@ -1,14 +1,14 @@
 using backtpp.Binder;
 using backtpp.Helpers;
+using backtpp.Interfaces;
+using backtpp.Models;
+using backtpp.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Repository.Interfaces;
-using Repository.Models;
-using Repository.Services;
 using System.Text;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -26,13 +26,13 @@ builder.Services.AddControllers(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // configure strongly typed settings objects
-var appSettingsSection = builder.Configuration.GetSection("AppSettings");
+IConfigurationSection? appSettingsSection = builder.Configuration.GetSection("AppSettings");
 
 builder.Services.Configure<AppSettings>(appSettingsSection);
 
 // configure jwt authentication
-var appSettings = appSettingsSection.Get<AppSettings>();
-var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+AppSettings? appSettings = appSettingsSection.Get<AppSettings>();
+byte[]? key = Encoding.ASCII.GetBytes(appSettings.Secret);
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -44,9 +44,9 @@ builder.Services.AddAuthentication(x =>
     {
         OnTokenValidated = context =>
         {
-            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
-            var userId = int.Parse(context.Principal.Identity.Name);
-            var user = userService.GetById(userId);
+            IUserService? userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+            int userId = int.Parse(context.Principal.Identity.Name);
+            User? user = userService.GetById(userId);
             if (user == null)
             {
                 // return unauthorized if user no longer exists
@@ -83,7 +83,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+WebApplication? app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

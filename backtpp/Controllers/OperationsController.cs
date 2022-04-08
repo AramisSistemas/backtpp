@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using backtpp.Helpers;
+using backtpp.Interfaces;
+using backtpp.Models;
+using backtpp.Modelsdto.Operations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Repository.Interfaces;
-using Repository.Models;
-using Repository.Modelsdto.Operations;
 
 namespace backtpp.Controllers
 {
@@ -264,10 +264,10 @@ namespace backtpp.Controllers
         [Route("LiquidacionesPay")]
         public IActionResult LiquidacionesPay([FromBody] List<LiquidacionPay> liquidacionPays)
         {
-           
+
             try
             {
-                var data = _operationService.LiquidacionesPay(liquidacionPays); 
+                IEnumerable<LiquidacionesLotePago>? data = _operationService.LiquidacionesPay(liquidacionPays);
                 _loggService.Log($"Lote {data.First().Lote} Pagado. Cantidad {data.First().Cantidad}", "Pays", "Update", _userName);
                 return Ok(data);
             }

@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using backtpp.Helpers;
+using backtpp.Interfaces;
+using backtpp.Models;
+using backtpp.Modelsdto.Users;
+using backtpp.Modelsdtos.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Repository.Interfaces;
-using Repository.Models;
-using Repository.Modelsdto.Users;
-using Repository.Modelsdtos.Users;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;

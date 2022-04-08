@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using backtpp.Helpers;
+using backtpp.Interfaces;
+using backtpp.Models;
+using backtpp.Modelsdto.Empleados;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Repository.Interfaces;
-using Repository.Models;
-using Repository.Modelsdto.Empleados;
 
 namespace backtpp.Controllers
 {
@@ -152,7 +152,7 @@ namespace backtpp.Controllers
         {
             try
             {
-                var data = _empleadoService.EmbargosGet();
+                IEnumerable<EmbargosDto>? data = _empleadoService.EmbargosGet();
                 return Ok(data);
             }
             catch (Exception ex)

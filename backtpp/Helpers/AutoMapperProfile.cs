@@ -1,11 +1,11 @@
 using AutoMapper;
-using Repository.Models;
-using Repository.Modelsdto.Compositions;
-using Repository.Modelsdto.Empleados;
-using Repository.Modelsdto.Operations;
-using Repository.Modelsdto.Users;
-using Repository.Modelsdtos.Commons;
-using Repository.Modelsdtos.Users;
+using backtpp.Models;
+using backtpp.Modelsdto.Compositions;
+using backtpp.Modelsdto.Empleados;
+using backtpp.Modelsdto.Operations;
+using backtpp.Modelsdto.Users;
+using backtpp.Modelsdtos.Commons;
+using backtpp.Modelsdtos.Users;
 
 namespace backtpp.Helpers
 {
