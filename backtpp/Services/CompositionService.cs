@@ -42,5 +42,30 @@ namespace backtpp.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public IEnumerable<PuestoDto> GetPuestos()
+        {
+            try
+            {
+                DataTable dt = _storeProcedure.SpWhithDataSet("PuestosGetAll");
+                List<PuestoDto> lst = new();
+                foreach (DataRow row in dt.Rows)
+                {
+                    lst.Add(new PuestoDto()  // -- >     Al Automapper
+                    {
+                        Id = (int)row["Id"],
+                        Detalle = row["Detalle"].ToString(),
+                        Agrupacion = (int)row["Agrupacion"],
+                        AgrupacionStr = row["AgrupacionStr"].ToString(), 
+                    });
+                }
+                return lst;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

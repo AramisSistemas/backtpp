@@ -1,8 +1,8 @@
 ﻿using backtpp.Interfaces;
 using backtpp.Models;
 using backtpp.Modelsdtos.Customer;
+using Microsoft.Data.SqlClient;
 using System.Data;
-using System.Data.SqlClient;
 
 namespace backtpp.Services
 {

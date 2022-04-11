@@ -192,7 +192,7 @@ namespace backtpp.Controllers
                     return BadRequest(new { message = "Este perfil no se encuentra autorizado" });
                 }
 
-                IEnumerable<OpPuesto>? data = _puestoService.Get();
+                IEnumerable<PuestoDto>? data = _compositionService.GetPuestos();
                 return Ok(data);
             }
             catch (Exception ex)

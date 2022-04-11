@@ -9,9 +9,8 @@ namespace backtpp.Services
     {
         private readonly tppContext _context;
         private readonly IMapper _mapper;
-        public LoggService(IMapper mapper)
-        {
-            tppContext context = new();
+        public LoggService(IMapper mapper, tppContext context)
+        { 
             _context = context;
             _mapper = mapper;
         }
