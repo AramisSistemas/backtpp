@@ -28,6 +28,7 @@ namespace backtpp.Helpers
             CreateMap<OpPuesto, PuestoDto>().ReverseMap();
             CreateMap<Esquema, EsquemaDto>().ReverseMap();
             CreateMap<OpComposicion, CompositionDto>().ReverseMap();
+            CreateMap<OpConcepto, CompositionJornales>().ReverseMap();
         }
     }
 }

@@ -1,11 +1,13 @@
-﻿namespace backtpp.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace backtpp.Modelsdto.Compositions
 {
-    public partial class OpConcepto
+     public class CompositionJornales
     {
-        public long Id { get; set; }
+        public int Id { get; set; }
         public int Agrupacion { get; set; }
-        public string Codigo { get; set; } = null!;
-        public string Concepto { get; set; } = null!;
+        public string Codigo { get; set; }
+        public string Concepto { get; set; }
         public decimal Monto { get; set; }
         public bool Fijo { get; set; }
         public bool Haber { get; set; }
@@ -15,6 +17,5 @@
         public bool Sremun { get; set; }
         public bool Obligatorio { get; set; }
 
-        public virtual OpAgrupacion AgrupacionNavigation { get; set; } = null!;
     }
 }

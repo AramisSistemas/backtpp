@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace backtpp.Models
 {
@@ -44,7 +41,7 @@ namespace backtpp.Models
         public virtual DbSet<UserPerfil> UserPerfils { get; set; } = null!;
         public virtual DbSet<UserPerfilOperation> UserPerfilOperations { get; set; } = null!;
 
-      
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

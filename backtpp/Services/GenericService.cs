@@ -11,43 +11,108 @@ namespace backtpp.Services
 
         public GenericService(tppContext context)
         {
-            _context = context;
-            _dbSet = _context.Set<TEntity>();
+            try
+            {
+
+
+                _context = context;
+                _dbSet = _context.Set<TEntity>();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
         public void Add(TEntity data)
         {
-            _dbSet.Add(data);
-            _context.SaveChanges();
+            try
+            {
+                _dbSet.Add(data);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public bool Delete(long id)
         {
-            TEntity? dataToDelete = _dbSet.Find(id);
-            if (dataToDelete is null)
+            try
             {
-                return false;
-            }
 
-            _dbSet.Remove(dataToDelete);
-            _context.SaveChanges();
-            return true;
+                TEntity? dataToDelete = _dbSet.Find(id);
+                if (dataToDelete is null)
+                {
+                    return false;
+                }
+
+                _dbSet.Remove(dataToDelete);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool Delete(int id)
+        {
+            try
+            {
+                TEntity? dataToDelete = _dbSet.Find(id);
+                if (dataToDelete is null)
+                {
+                    return false;
+                }
+
+                _dbSet.Remove(dataToDelete);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public IEnumerable<TEntity> Get()
         {
-            return _dbSet.ToList();
+            try
+            {
+                return _dbSet.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public TEntity Get(int id)
         {
-            return _dbSet.Find(id);
+            try
+            {
+                return _dbSet.Find(id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public void Update(TEntity data)
         {
-            _dbSet.Attach(data);
-            _context.Entry(data).State = EntityState.Modified;
-            _context.SaveChanges();
+            try
+            {
+                _dbSet.Attach(data);
+                _context.Entry(data).State = EntityState.Modified;
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

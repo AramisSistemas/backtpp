@@ -17,6 +17,7 @@ namespace backtpp.Controllers
         private readonly IGenericService<OpManiobra> _maniobraService;
         private readonly IGenericService<OpPuesto> _puestoService;
         private readonly IGenericService<Esquema> _esquemaService;
+        private readonly IGenericService<OpConcepto> _compositionJornalesService;
         private readonly IGenericService<OpComposicion> _genericCompositionService;
         private readonly ICompositionService _compositionService;
         private readonly ILoggService _loggService;
@@ -33,7 +34,8 @@ namespace backtpp.Controllers
             IGenericService<OpPuesto> puestoService,
             IGenericService<Esquema> esquemaService,
             ICompositionService compositionService,
-            IGenericService<OpComposicion> genericCompositionService
+            IGenericService<OpComposicion> genericCompositionService,
+            IGenericService<OpConcepto> compositionJornalesService
             )
         {
             _esquemaService = esquemaService;
@@ -42,11 +44,111 @@ namespace backtpp.Controllers
             _agrupacionService = agrupacionService;
             _compositionService = compositionService;
             _genericCompositionService = genericCompositionService;
+            _compositionJornalesService = compositionJornalesService;
             _loggService = loggService;
             _securityService = securityService;
             _userName = _securityService.GetUserAuthenticated();
             _perfil = _securityService.GetPerfilAuthenticated();
             _mapper = mapper;
+        }
+
+        [HttpGet]
+        [Route("GetCompoJornales")]
+        public IActionResult GetCompoJornales()
+        {
+            try
+            {
+                if (_perfil < 3)
+                {
+                    return BadRequest(new { message = "Este perfil no se encuentra autorizado" });
+                }
+
+                IEnumerable<OpConcepto>? data = _compositionJornalesService.Get();
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpGet]
+        [Route("GetConceptosJornales")]
+        public IActionResult GetConceptosJornales(int agrupacion)
+        {
+            try
+            {
+                if (_perfil < 3)
+                {
+                    return BadRequest(new { message = "Este perfil no se encuentra autorizado" });
+                }
+
+                IEnumerable<CompositionJornales>? data = _compositionService.GetCompoJornalesUso(agrupacion);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpPatch]
+        [Route("UpdateCompoJornales")]
+        public IActionResult UpdateCompoJornales([FromForm] CompositionJornales compositionJornales)
+        {
+            try
+            {
+                if (_perfil < 3)
+                {
+                    return BadRequest(new { message = "Este perfil no se encuentra autorizado" });
+                }
+
+                OpConcepto? OpcompositionJornales = _mapper.Map<OpConcepto>(compositionJornales);
+                _compositionJornalesService.Update(OpcompositionJornales);
+                _loggService.Log($"Actualiza Concepto Jornales {compositionJornales.Concepto}", "Jornales", "Update", _userName);
+                return Ok("Correcto");
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Concepto Jornales {compositionJornales.Concepto}", "Jornales", "Update", _userName);
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpPut]
+        [Route("InsertCompoJornales")]
+        public IActionResult InsertCompoJornales([FromBody] List<CompositionJornales> compositionJornales)
+        {
+            try
+            {
+                bool data = _compositionService.ComposicionJornalesInsert(compositionJornales);
+                _loggService.Log("Composition Jornales Agregados", "Jornales", "Add", _userName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log("Error tratando de Agregar Composition Jornales", "Jornales", "Add", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteCompoJornales")]
+        public IActionResult DeleteCompoJornales(long id)
+        {
+            try
+            {
+                bool data = _compositionJornalesService.Delete(id);
+                _loggService.Log($"Composition Jornal {id} Eliminado ", "Jornales", "Delete", _userName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Eliminar Composition Jornales {id}", "Jornales", "Delete", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         [HttpGet]
@@ -111,6 +213,24 @@ namespace backtpp.Controllers
             catch (Exception ex)
             {
                 _loggService.Log($"Error tratando de Ingresar Agrupacion {agrupacion.Detalle}", "Agrupaciones", "Insert", _userName);
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteAgrupaciones")]
+        public IActionResult DeleteAgrupaciones(int id)
+        {
+            try
+            {
+                _agrupacionService.Delete(id);
+                _loggService.Log($"Elimina Agrupacion", "Agrupaciones", "Delete", _userName);
+                return Ok("Baja Correcta");
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Eliminar Agrupacion", "Agrupaciones", "Delete", _userName);
+                // return error message if there was an exception
                 return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
             }
         }

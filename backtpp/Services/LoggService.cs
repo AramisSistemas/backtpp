@@ -10,12 +10,14 @@ namespace backtpp.Services
         private readonly tppContext _context;
         private readonly IMapper _mapper;
         public LoggService(IMapper mapper, tppContext context)
-        { 
+        {
             _context = context;
             _mapper = mapper;
         }
         public void Log(string detalle, string modulo, string tipo, string operador)
         {
+            _context.ChangeTracker.Clear();
+
             LoggModel loggModel = new()
             {
                 Detalle = detalle,

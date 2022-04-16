@@ -16,13 +16,13 @@ builder.Services.AddControllers();
 
 IServiceCollection serviceCollection = builder.Services.AddDbContext<tppContext>(Options => Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddCors();
-#region Binder
+//#region Binder
 
 builder.Services.AddControllers(options =>
 {
     options.ModelBinderProviders.Insert(0, new CustomBinderProvider());
 });
-#endregion
+//#endregion
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 // configure strongly typed settings objects
@@ -77,8 +77,6 @@ builder.Services.AddScoped<IEmpleadoService, EmpleadoService>();
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 builder.Services.AddScoped<SecurityService>();
 builder.Services.AddHttpContextAccessor();
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
