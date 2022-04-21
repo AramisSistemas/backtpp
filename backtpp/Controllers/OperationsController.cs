@@ -33,9 +33,9 @@ namespace backtpp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public IActionResult GetAll(bool activas)
         {
-            IEnumerable<OperationModel>? data = _operationService.GetAll();
+            IEnumerable<OperationModel>? data = _operationService.GetAll(!activas);
 
             return Ok(data);
         }

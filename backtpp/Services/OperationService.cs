@@ -102,7 +102,7 @@ namespace backtpp.Services
             {
                 throw new Exception("No se pueden modificar las Maniobras finalizadas");
             }
-
+            _context.ChangeTracker.Clear();
             _context.OperacionManiobras.Update(operacionManiobra);
             _context.SaveChanges();
             return true;
