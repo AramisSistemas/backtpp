@@ -337,6 +337,97 @@ namespace backtpp.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("SacLiquida")]
+        public IActionResult SacLiquida(int semestre, int año)
+        {
+            try
+            {
+                bool res = _operationService.SacLiquida(semestre, año, _userName);
+                _loggService.Log($"SAC {semestre}ª del {año} Liquidado Correctamente", "Liquidaciones", "Cierre", _userName);
+                return Ok("SAC Liquidado");
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Liquidar SAC {semestre}ª del {año}", "Liquidaciones", "Cierre", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("SacConfirma")]
+        public IActionResult SacConfirma(int semestre, int año)
+        {
+            try
+            {
+                bool res = _operationService.SacConfirma(semestre, año, _userName);
+                _loggService.Log($"SAC {semestre}ª del {año} Confirmado Correctamente", "Liquidaciones", "Confirm", _userName);
+                return Ok("SAC Confirmado");
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Confirmar SAC {semestre}ª del {año}", "Liquidaciones", "Confirm", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("SacDelete")]
+        public IActionResult SacDelete(int semestre, int año)
+        {
+            try
+            {
+                bool data = _operationService.SacDelete(semestre, año);
+                _loggService.Log($"Liquidaciones Eliminadas SAC {semestre}ª del {año}", "Liquidaciones", "Delete", _userName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratanto de eliminar Liquidaciones SAC {semestre}ª del {año}", "Liquidaciones", "Delete", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("SacReabre")]
+        public IActionResult SacReabre(int semestre, int año)
+        {
+            try
+            {
+                bool res = _operationService.SacReabre(semestre, año, _userName);
+                _loggService.Log($"SAC {semestre}ª del {año} Reabierto Correctamente", "Liquidaciones", "Cierre", _userName);
+                return Ok("SAC Liquidado");
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Reabrir SAC {semestre}ª del {año}", "Liquidaciones", "Cierre", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpPost]
+        [Route("SacPay")]
+        public IActionResult SacPay([FromBody] List<LiquidacionPay> liquidacionPays)
+        {
+
+            try
+            {
+                IEnumerable<LiquidacionesLotePago>? data = _operationService.SacPay(liquidacionPays);
+                _loggService.Log($"Lote {data.First().Lote} Pagado. Cantidad {data.First().Cantidad}", "Pays", "Update", _userName);
+                return Ok(data);
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratanto de realizar Pagos", "Pays", "Update", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
         #region Auxiliares
         [HttpGet]
         [Route("GetTurnos")]

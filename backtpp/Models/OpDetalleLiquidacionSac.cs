@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace backtpp.Models
 {
-    public partial class OpDetalleLiquidacion
+    public partial class OpDetalleLiquidacionSac
     {
         public long Id { get; set; }
         public long ManiobraOpFk { get; set; }

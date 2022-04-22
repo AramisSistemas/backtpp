@@ -11,6 +11,7 @@
         public decimal Monto { get; set; }
         public bool Haber { get; set; }
         public bool Remunerativo { get; set; }
-        public long IdEmpleado { get; set; }
+        public long IdEmpleado { get; set; } 
+
     }
 }

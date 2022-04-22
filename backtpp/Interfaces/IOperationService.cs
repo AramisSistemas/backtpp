@@ -25,7 +25,12 @@ namespace backtpp.Interfaces
         bool LiquidacionesLLave(long operacion, int puesto, int llave);
         LiquidacionesByOp LiquidacionesPayPending();
         IEnumerable<LiquidacionesLotePago> LiquidacionesPay(List<LiquidacionPay> liquidaciones);
-
+        bool SacLiquida(int semestre, int año, string operador);
+        bool SacConfirma(int semestre, int año, string operador);
+        bool SacDelete(int semestre, int año);
+        bool SacReabre(int semestre, int año, string operador);
+        IEnumerable<LiquidacionesLotePago> SacPay(List<LiquidacionPay> liquidaciones);
+        SacByPeriodo  GetSacByPeriodo(int? año=null);
     }
 }
 

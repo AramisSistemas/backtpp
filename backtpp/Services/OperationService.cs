@@ -541,5 +541,213 @@ namespace backtpp.Services
                 throw new Exception(ex.Message);
             }
         }
+
+        public bool SacLiquida(int semestre, int año, string operador)
+        {
+            try
+            {
+
+                List<SqlParameter> Params = new();
+                Params.Add(new SqlParameter("@semestre", semestre));
+                Params.Add(new SqlParameter("@año", año));
+                Params.Add(new SqlParameter("@operador", operador));
+                bool res = _storeProcedure.ExecuteNonQuery("SacLiquida", Params);
+
+                return res;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool SacConfirma(int semestre, int año, string operador)
+        {
+            try
+            {
+
+                List<SqlParameter> Params = new();
+                Params.Add(new SqlParameter("@semestre", semestre));
+                Params.Add(new SqlParameter("@año", año));
+                Params.Add(new SqlParameter("@operador", operador));
+                bool res = _storeProcedure.ExecuteNonQuery("SacConfirma", Params);
+
+                return res;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool SacDelete(int semestre, int año)
+        {
+            try
+            {
+
+                List<SqlParameter> Params = new();
+                Params.Add(new SqlParameter("@semestre", semestre));
+                Params.Add(new SqlParameter("@año", año));
+                bool res = _storeProcedure.ExecuteNonQuery("SacDeleteBySemestreByAño", Params);
+
+                return res;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public bool SacReabre(int semestre, int año, string operador)
+        {
+            try
+            {
+
+                List<SqlParameter> Params = new();
+                Params.Add(new SqlParameter("@semestre", semestre));
+                Params.Add(new SqlParameter("@año", año));
+                Params.Add(new SqlParameter("@operador", operador));
+                bool res = _storeProcedure.ExecuteNonQuery("SacReabre", Params);
+
+                return res;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IEnumerable<LiquidacionesLotePago> SacPay(List<LiquidacionPay> liquidaciones)
+        {
+            try
+            {
+                List<SqlParameter> Params = new();
+                if (liquidaciones != null)
+                {
+                    SqlParameter Param = new("@liquidacion", AuxDataTable.ToDataTable(liquidaciones))
+                    {
+                        TypeName = "LiquidacionesTable",
+                        SqlDbType = SqlDbType.Structured
+                    };
+                    Params.Add(Param);
+                };
+                DataTable? res = _storeProcedure.SpWhithDataSet("SacPay", Params);
+                List<LiquidacionesLotePago> lst = new();
+                foreach (DataRow rowPagos in res.Rows)
+                {
+                    lst.Add(new LiquidacionesLotePago()
+                    {
+                        Cantidad = (int)rowPagos["Cantidad"],
+                        Cuit = rowPagos["Cuit"].ToString(),
+                        Lote = (long)rowPagos["Lote"],
+
+                    });
+                };
+                return lst;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public  SacByPeriodo  GetSacByPeriodo(int? año=null)
+        {
+            try
+            {
+                DataSet ds = new();
+                if (año is not null) { 
+                List<SqlParameter> Params = new();
+                Params.Add(new SqlParameter("@año", año));
+                ds = _storeProcedure.SpWhithDataSetPure("SacByAño", Params);
+                }
+                else
+                {
+                ds = _storeProcedure.SpWhithDataSetPure("SacByAño");
+                }
+                SacByPeriodo lst = new();
+                List<SacPeriod> sacPeriod = new();
+                List<SacModel> sacModel = new(); 
+                List<LiquidacionDetalleModel> liquidacionDetalleModels = new();
+                List<EmpresaDto> empresaDtos = new();
+                DataTable dtSac = new();
+                DataTable dtModel = new(); 
+                DataTable dtDet = new();
+                DataTable dtEmp = new();
+                dtSac = ds.Tables[0];
+                dtModel = ds.Tables[1]; 
+                dtDet = ds.Tables[3];
+                dtEmp = ds.Tables[4];
+                foreach (DataRow rowSac in dtSac.Rows)
+                {
+                    sacPeriod.Add(new SacPeriod()
+                    {
+                        Semestre = (int)rowSac["Semestre"],                        
+                        Año = (int)rowSac["Año"],
+                    });
+                    
+                    foreach (DataRow rowMod in dtModel.Rows)
+                    {
+                        sacModel.Add(new SacModel()
+                        {
+                            Liquidacion = (long)rowMod["Liquidacion"],
+                            Fecha = (DateTime)rowMod["Fecha"],
+                            Semestre = (int)rowMod["Semestre"],
+                            Año = (int)rowMod["Año"],
+                            Empleado = (long)rowMod["Empleado"],
+                            Cuil = (long)rowMod["Cuil"],
+                            Nombre = rowMod["Nombre"].ToString(),                            
+                            Haberes = (decimal)rowMod["Haberes"],
+                            Descuentos = (decimal)rowMod["Descuentos"],
+                            Remunerativos = (decimal)rowMod["Remunerativos"],
+                            NoRemunerativos = (decimal)rowMod["NoRemunerativos"],
+                            Neto = (decimal)rowMod["Neto"],
+                            Confirmada = (bool)rowMod["Confirmada"],
+                            Operador = rowMod["Operador"].ToString(),
+                            OperadorConfirma = rowMod["OperadorConfirma"].ToString(),
+                            Pagado = (bool)rowMod["Pagado"],
+                            EnLetras = rowMod["EnLetras"].ToString(), 
+                        });
+                    };
+                    foreach (DataRow rowDet in dtDet.Rows)
+                    {
+                        liquidacionDetalleModels.Add(new LiquidacionDetalleModel()
+                        {
+                            Liquidacion = (long)rowDet["Liquidacion"], 
+                            Codigo = rowDet["Codigo"].ToString(),
+                            Concepto = rowDet["Concepto"].ToString(),
+                            Cantidad = (decimal)rowDet["Cantidad"],
+                            Monto = (decimal)rowDet["Monto"],
+                            Haber = (bool)rowDet["Haber"],
+                            Remunerativo = (bool)rowDet["Remunerativo"], 
+                        });
+                    };
+                    foreach (DataRow rowEmp in dtEmp.Rows)
+                    {
+                        empresaDtos.Add(new EmpresaDto()
+                        {
+                            Contacto = rowEmp["Contacto"].ToString(),
+                            Cuit = rowEmp["Cuit"].ToString(),
+                            Razon = rowEmp["Razon"].ToString(),
+                            Domicilio = rowEmp["Domicilio"].ToString(),
+                        });
+                    };
+                }
+                lst.SacPeriods = sacPeriod;
+                lst.SacModels = sacModel;
+                lst.LiquidacionDetalleModel = liquidacionDetalleModels;
+                lst.EmpresaDtos = empresaDtos;
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

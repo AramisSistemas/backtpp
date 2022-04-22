@@ -1,4 +1,7 @@
-﻿namespace backtpp.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace backtpp.Models
 {
     public partial class OpEmpleado
     {
@@ -6,6 +9,7 @@
         {
             Liquidacions = new HashSet<Liquidacion>();
             OpEmpleadoEmbargoes = new HashSet<OpEmpleadoEmbargo>();
+            Sacs = new HashSet<Sac>();
         }
 
         public long Id { get; set; }
@@ -28,5 +32,6 @@
         public virtual ObraSocial OsocialNavigation { get; set; } = null!;
         public virtual ICollection<Liquidacion> Liquidacions { get; set; }
         public virtual ICollection<OpEmpleadoEmbargo> OpEmpleadoEmbargoes { get; set; }
+        public virtual ICollection<Sac> Sacs { get; set; }
     }
 }

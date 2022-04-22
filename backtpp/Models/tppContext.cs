@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace backtpp.Models
 {
@@ -25,6 +28,7 @@ namespace backtpp.Models
         public virtual DbSet<OpConcepto> OpConceptos { get; set; } = null!;
         public virtual DbSet<OpDestino> OpDestinos { get; set; } = null!;
         public virtual DbSet<OpDetalleLiquidacion> OpDetalleLiquidacions { get; set; } = null!;
+        public virtual DbSet<OpDetalleLiquidacionSac> OpDetalleLiquidacionSacs { get; set; } = null!;
         public virtual DbSet<OpEmpleado> OpEmpleados { get; set; } = null!;
         public virtual DbSet<OpEmpleadoEmbargo> OpEmpleadoEmbargoes { get; set; } = null!;
         public virtual DbSet<OpManiobra> OpManiobras { get; set; } = null!;
@@ -32,6 +36,7 @@ namespace backtpp.Models
         public virtual DbSet<Operacion> Operacions { get; set; } = null!;
         public virtual DbSet<OperacionManiobra> OperacionManiobras { get; set; } = null!;
         public virtual DbSet<ProveedorImputacion> ProveedorImputacions { get; set; } = null!;
+        public virtual DbSet<Sac> Sacs { get; set; } = null!;
         public virtual DbSet<SystemOption> SystemOptions { get; set; } = null!;
         public virtual DbSet<Turno> Turnos { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
@@ -40,9 +45,7 @@ namespace backtpp.Models
         public virtual DbSet<UserOperation> UserOperations { get; set; } = null!;
         public virtual DbSet<UserPerfil> UserPerfils { get; set; } = null!;
         public virtual DbSet<UserPerfilOperation> UserPerfilOperations { get; set; } = null!;
-
-
-
+ 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Cliente>(entity =>
@@ -307,6 +310,35 @@ namespace backtpp.Models
                     .HasConstraintName("FK_OpDetalleLiquidacion_PuestoFk");
             });
 
+            modelBuilder.Entity<OpDetalleLiquidacionSac>(entity =>
+            {
+                entity.ToTable("OpDetalleLiquidacionSac");
+
+                entity.Property(e => e.Cantidad).HasColumnType("decimal(18, 2)");
+
+                entity.Property(e => e.Codigo)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Concepto)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Monto).HasColumnType("decimal(18, 2)");
+
+                entity.HasOne(d => d.ManiobraOpFkNavigation)
+                    .WithMany(p => p.OpDetalleLiquidacionSacs)
+                    .HasForeignKey(d => d.ManiobraOpFk)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OpDetalleLiquidacionSac_ManiobraOpFk");
+
+                entity.HasOne(d => d.PuestoFkNavigation)
+                    .WithMany(p => p.OpDetalleLiquidacionSacs)
+                    .HasForeignKey(d => d.PuestoFk)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OpDetalleLiquidacionSac_PuestoFk");
+            });
+
             modelBuilder.Entity<OpEmpleado>(entity =>
             {
                 entity.ToTable("OpEmpleado");
@@ -485,6 +517,31 @@ namespace backtpp.Models
                 entity.Property(e => e.Id)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Sac>(entity =>
+            {
+                entity.ToTable("Sac");
+
+                entity.Property(e => e.Cbu)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Fecha).HasColumnType("datetime");
+
+                entity.Property(e => e.Operador)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.OperadorConfirma)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.EmpleadoNavigation)
+                    .WithMany(p => p.Sacs)
+                    .HasForeignKey(d => d.Empleado)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Sac_Empleado");
             });
 
             modelBuilder.Entity<SystemOption>(entity =>

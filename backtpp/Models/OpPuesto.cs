@@ -1,4 +1,7 @@
-﻿namespace backtpp.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace backtpp.Models
 {
     public partial class OpPuesto
     {
@@ -6,6 +9,7 @@
         {
             Liquidacions = new HashSet<Liquidacion>();
             OpComposicions = new HashSet<OpComposicion>();
+            OpDetalleLiquidacionSacs = new HashSet<OpDetalleLiquidacionSac>();
             OpDetalleLiquidacions = new HashSet<OpDetalleLiquidacion>();
         }
 
@@ -16,6 +20,7 @@
         public virtual OpAgrupacion AgrupacionNavigation { get; set; } = null!;
         public virtual ICollection<Liquidacion> Liquidacions { get; set; }
         public virtual ICollection<OpComposicion> OpComposicions { get; set; }
+        public virtual ICollection<OpDetalleLiquidacionSac> OpDetalleLiquidacionSacs { get; set; }
         public virtual ICollection<OpDetalleLiquidacion> OpDetalleLiquidacions { get; set; }
     }
 }

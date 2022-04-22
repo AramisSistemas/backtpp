@@ -1,10 +1,14 @@
-﻿namespace backtpp.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace backtpp.Models
 {
     public partial class OperacionManiobra
     {
         public OperacionManiobra()
         {
             Liquidacions = new HashSet<Liquidacion>();
+            OpDetalleLiquidacionSacs = new HashSet<OpDetalleLiquidacionSac>();
             OpDetalleLiquidacions = new HashSet<OpDetalleLiquidacion>();
         }
 
@@ -23,6 +27,7 @@
         public virtual Operacion OperacionNavigation { get; set; } = null!;
         public virtual Turno TurnoNavigation { get; set; } = null!;
         public virtual ICollection<Liquidacion> Liquidacions { get; set; }
+        public virtual ICollection<OpDetalleLiquidacionSac> OpDetalleLiquidacionSacs { get; set; }
         public virtual ICollection<OpDetalleLiquidacion> OpDetalleLiquidacions { get; set; }
     }
 }
