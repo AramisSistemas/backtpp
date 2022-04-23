@@ -428,6 +428,14 @@ namespace backtpp.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("GetSacByPeriodo")]
+        public IActionResult GetSacByPeriodo(int? año = null)
+        {
+            SacByPeriodo? data = _operationService.GetSacByPeriodo(año);
+            return Ok(data);
+        }
+
         #region Auxiliares
         [HttpGet]
         [Route("GetTurnos")]

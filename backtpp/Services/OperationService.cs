@@ -656,20 +656,15 @@ namespace backtpp.Services
             }
         }
 
-        public  SacByPeriodo  GetSacByPeriodo(int? año=null)
+        public  SacByPeriodo  GetSacByPeriodo(int? año)
         {
             try
             {
-                DataSet ds = new();
-                if (año is not null) { 
+                if (año is null)
+                    año = DateTime.Now.Year;
                 List<SqlParameter> Params = new();
                 Params.Add(new SqlParameter("@año", año));
-                ds = _storeProcedure.SpWhithDataSetPure("SacByAño", Params);
-                }
-                else
-                {
-                ds = _storeProcedure.SpWhithDataSetPure("SacByAño");
-                }
+                DataSet ds = _storeProcedure.SpWhithDataSetPure("SacByAño", Params);                
                 SacByPeriodo lst = new();
                 List<SacPeriod> sacPeriod = new();
                 List<SacModel> sacModel = new(); 
@@ -681,8 +676,8 @@ namespace backtpp.Services
                 DataTable dtEmp = new();
                 dtSac = ds.Tables[0];
                 dtModel = ds.Tables[1]; 
-                dtDet = ds.Tables[3];
-                dtEmp = ds.Tables[4];
+                dtDet = ds.Tables[2];
+                dtEmp = ds.Tables[3];
                 foreach (DataRow rowSac in dtSac.Rows)
                 {
                     sacPeriod.Add(new SacPeriod()
