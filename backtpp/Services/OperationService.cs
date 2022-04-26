@@ -580,27 +580,7 @@ namespace backtpp.Services
             {
                 throw new Exception(ex.Message);
             }
-        }
-
-        public bool SacDelete(int semestre, int año)
-        {
-            try
-            {
-
-                List<SqlParameter> Params = new();
-                Params.Add(new SqlParameter("@semestre", semestre));
-                Params.Add(new SqlParameter("@año", año));
-                bool res = _storeProcedure.ExecuteNonQuery("SacDeleteBySemestreByAño", Params);
-
-                return res;
-
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
+        } 
         public bool SacReabre(int semestre, int año, string operador)
         {
             try
@@ -695,7 +675,8 @@ namespace backtpp.Services
                             Semestre = (int)rowMod["Semestre"],
                             Año = (int)rowMod["Año"],
                             Empleado = (long)rowMod["Empleado"],
-                            Cuil = (long)rowMod["Cuil"],
+                            Cuil = rowMod["Cuil"].ToString(),
+                            Cbu = rowMod["Cbu"].ToString(),
                             Nombre = rowMod["Nombre"].ToString(),                            
                             Haberes = (decimal)rowMod["Haberes"],
                             Descuentos = (decimal)rowMod["Descuentos"],

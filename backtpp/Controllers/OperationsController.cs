@@ -371,25 +371,7 @@ namespace backtpp.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
             }
-        }
-
-        [HttpDelete]
-        [Route("SacDelete")]
-        public IActionResult SacDelete(int semestre, int año)
-        {
-            try
-            {
-                bool data = _operationService.SacDelete(semestre, año);
-                _loggService.Log($"Liquidaciones Eliminadas SAC {semestre}ª del {año}", "Liquidaciones", "Delete", _userName);
-                return Ok(data);
-            }
-            catch (Exception ex)
-            {
-                _loggService.Log($"Error tratanto de eliminar Liquidaciones SAC {semestre}ª del {año}", "Liquidaciones", "Delete", _userName);
-                // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
-            }
-        }
+        } 
 
         [HttpPost]
         [Route("SacReabre")]

@@ -5,7 +5,8 @@
         public long Liquidacion { get; set; }
         public DateTime Fecha { get; set; }
         public long Empleado { get; set; }
-        public long Cuil { get; set; }
+        public string Cuil { get; set; }
+        public string Cbu { get; set; }
         public string Nombre { get; set; }
         public int Año { get; set; }
         public int Semestre { get; set; }
