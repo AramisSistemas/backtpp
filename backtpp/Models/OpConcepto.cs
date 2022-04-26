@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace backtpp.Models
+﻿namespace backtpp.Models
 {
     public partial class OpConcepto
     {

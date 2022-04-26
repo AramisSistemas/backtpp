@@ -2,7 +2,7 @@
 using backtpp.Helpers;
 using backtpp.Interfaces;
 using backtpp.Models;
-using backtpp.Modelsdto.Operations;
+using backtpp.Modelsdtos.Operations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -371,7 +371,7 @@ namespace backtpp.Controllers
                 // return error message if there was an exception
                 return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
             }
-        } 
+        }
 
         [HttpPost]
         [Route("SacReabre")]

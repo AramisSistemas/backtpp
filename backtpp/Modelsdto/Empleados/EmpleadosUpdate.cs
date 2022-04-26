@@ -1,4 +1,4 @@
-﻿namespace backtpp.Modelsdto.Empleados
+﻿namespace backtpp.Modelsdtos.Empleados
 {
     public class EmpleadosUpdate
     {

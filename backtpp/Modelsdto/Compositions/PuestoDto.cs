@@ -1,4 +1,4 @@
-﻿namespace backtpp.Modelsdto.Compositions
+﻿namespace backtpp.Modelsdtos.Compositions
 {
     public class PuestoDto
     {

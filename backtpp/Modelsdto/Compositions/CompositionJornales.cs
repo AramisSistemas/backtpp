@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace backtpp.Modelsdto.Compositions
+﻿namespace backtpp.Modelsdtos.Compositions
 {
-     public class CompositionJornales
+    public class CompositionJornales
     {
         public int Id { get; set; }
         public int Agrupacion { get; set; }

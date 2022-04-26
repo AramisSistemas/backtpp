@@ -1,6 +1,6 @@
-﻿using backtpp.Modelsdto.Commons;
+﻿using backtpp.Modelsdtos.Commons;
 
-namespace backtpp.Modelsdto.Operations
+namespace backtpp.Modelsdtos.Operations
 {
     public class SacByPeriodo
     {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backtpp.Modelsdto.Empleados
+namespace backtpp.Modelsdtos.Empleados
 {
     public class EmpleadoEmbargoAdd
     {

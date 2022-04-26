@@ -1,5 +1,5 @@
 ﻿using backtpp.Models;
-using backtpp.Modelsdto.Empleados;
+using backtpp.Modelsdtos.Empleados;
 
 namespace backtpp.Interfaces
 {

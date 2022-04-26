@@ -1,9 +1,8 @@
 using AutoMapper;
 using backtpp.Models;
-using backtpp.Modelsdto.Compositions;
-using backtpp.Modelsdto.Empleados;
-using backtpp.Modelsdto.Operations;
-using backtpp.Modelsdto.Users;
+using backtpp.Modelsdtos.Compositions;
+using backtpp.Modelsdtos.Empleados;
+using backtpp.Modelsdtos.Operations;
 using backtpp.Modelsdtos.Commons;
 using backtpp.Modelsdtos.Users;
 

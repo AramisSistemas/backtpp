@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace backtpp.Modelsdto.Users
+namespace backtpp.Modelsdtos.Users
 {
     public class ChangePassword
     {

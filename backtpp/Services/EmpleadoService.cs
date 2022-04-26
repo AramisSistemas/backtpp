@@ -1,6 +1,6 @@
 ﻿using backtpp.Interfaces;
 using backtpp.Models;
-using backtpp.Modelsdto.Empleados;
+using backtpp.Modelsdtos.Empleados;
 using Microsoft.Data.SqlClient;
 using System.Data;
 

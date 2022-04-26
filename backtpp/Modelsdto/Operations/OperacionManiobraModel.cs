@@ -1,4 +1,4 @@
-﻿namespace backtpp.Modelsdto.Operations
+﻿namespace backtpp.Modelsdtos.Operations
 {
     public class OperacionManiobraModel
     {

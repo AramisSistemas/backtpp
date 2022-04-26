@@ -2,7 +2,7 @@
 using backtpp.Helpers;
 using backtpp.Interfaces;
 using backtpp.Models;
-using backtpp.Modelsdto.Compositions;
+using backtpp.Modelsdtos.Compositions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

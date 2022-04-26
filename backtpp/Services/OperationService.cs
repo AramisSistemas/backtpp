@@ -1,7 +1,7 @@
 ﻿using backtpp.Interfaces;
 using backtpp.Models;
-using backtpp.Modelsdto.Commons;
-using backtpp.Modelsdto.Operations;
+using backtpp.Modelsdtos.Commons;
+using backtpp.Modelsdtos.Operations;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -580,7 +580,7 @@ namespace backtpp.Services
             {
                 throw new Exception(ex.Message);
             }
-        } 
+        }
         public bool SacReabre(int semestre, int año, string operador)
         {
             try
@@ -636,36 +636,39 @@ namespace backtpp.Services
             }
         }
 
-        public  SacByPeriodo  GetSacByPeriodo(int? año)
+        public SacByPeriodo GetSacByPeriodo(int? año)
         {
             try
             {
                 if (año is null)
+                {
                     año = DateTime.Now.Year;
+                }
+
                 List<SqlParameter> Params = new();
                 Params.Add(new SqlParameter("@año", año));
-                DataSet ds = _storeProcedure.SpWhithDataSetPure("SacByAño", Params);                
+                DataSet ds = _storeProcedure.SpWhithDataSetPure("SacByAño", Params);
                 SacByPeriodo lst = new();
                 List<SacPeriod> sacPeriod = new();
-                List<SacModel> sacModel = new(); 
+                List<SacModel> sacModel = new();
                 List<LiquidacionDetalleModel> liquidacionDetalleModels = new();
                 List<EmpresaDto> empresaDtos = new();
                 DataTable dtSac = new();
-                DataTable dtModel = new(); 
+                DataTable dtModel = new();
                 DataTable dtDet = new();
                 DataTable dtEmp = new();
                 dtSac = ds.Tables[0];
-                dtModel = ds.Tables[1]; 
+                dtModel = ds.Tables[1];
                 dtDet = ds.Tables[2];
                 dtEmp = ds.Tables[3];
                 foreach (DataRow rowSac in dtSac.Rows)
                 {
                     sacPeriod.Add(new SacPeriod()
                     {
-                        Semestre = (int)rowSac["Semestre"],                        
+                        Semestre = (int)rowSac["Semestre"],
                         Año = (int)rowSac["Año"],
                     });
-                    
+
                     foreach (DataRow rowMod in dtModel.Rows)
                     {
                         sacModel.Add(new SacModel()
@@ -677,7 +680,7 @@ namespace backtpp.Services
                             Empleado = (long)rowMod["Empleado"],
                             Cuil = rowMod["Cuil"].ToString(),
                             Cbu = rowMod["Cbu"].ToString(),
-                            Nombre = rowMod["Nombre"].ToString(),                            
+                            Nombre = rowMod["Nombre"].ToString(),
                             Haberes = (decimal)rowMod["Haberes"],
                             Descuentos = (decimal)rowMod["Descuentos"],
                             Remunerativos = (decimal)rowMod["Remunerativos"],
@@ -687,20 +690,20 @@ namespace backtpp.Services
                             Operador = rowMod["Operador"].ToString(),
                             OperadorConfirma = rowMod["OperadorConfirma"].ToString(),
                             Pagado = (bool)rowMod["Pagado"],
-                            EnLetras = rowMod["EnLetras"].ToString(), 
+                            EnLetras = rowMod["EnLetras"].ToString(),
                         });
                     };
                     foreach (DataRow rowDet in dtDet.Rows)
                     {
                         liquidacionDetalleModels.Add(new LiquidacionDetalleModel()
                         {
-                            Liquidacion = (long)rowDet["Liquidacion"], 
+                            Liquidacion = (long)rowDet["Liquidacion"],
                             Codigo = rowDet["Codigo"].ToString(),
                             Concepto = rowDet["Concepto"].ToString(),
                             Cantidad = (decimal)rowDet["Cantidad"],
                             Monto = (decimal)rowDet["Monto"],
                             Haber = (bool)rowDet["Haber"],
-                            Remunerativo = (bool)rowDet["Remunerativo"], 
+                            Remunerativo = (bool)rowDet["Remunerativo"],
                         });
                     };
                     foreach (DataRow rowEmp in dtEmp.Rows)

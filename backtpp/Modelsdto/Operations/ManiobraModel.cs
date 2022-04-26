@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
-namespace backtpp.Modelsdto.Operations
+namespace backtpp.Modelsdtos.Operations
 {
     public class ManiobraModel
     {

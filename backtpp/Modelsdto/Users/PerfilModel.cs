@@ -1,4 +1,4 @@
-﻿namespace backtpp.Modelsdto.Users
+﻿namespace backtpp.Modelsdtos.Users
 {
     public class PerfilModel
     {

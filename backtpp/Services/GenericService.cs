@@ -12,7 +12,7 @@ namespace backtpp.Services
         public GenericService(tppContext context)
         {
             try
-            { 
+            {
                 _context = context;
                 _dbSet = _context.Set<TEntity>();
             }

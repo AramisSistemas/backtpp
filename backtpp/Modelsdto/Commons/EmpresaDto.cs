@@ -1,4 +1,4 @@
-﻿namespace backtpp.Modelsdto.Commons
+﻿namespace backtpp.Modelsdtos.Commons
 {
     public class EmpresaDto
     {

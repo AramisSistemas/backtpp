@@ -1,5 +1,5 @@
 ﻿using backtpp.Models;
-using backtpp.Modelsdto.Operations;
+using backtpp.Modelsdtos.Operations;
 
 namespace backtpp.Interfaces
 {
@@ -26,10 +26,10 @@ namespace backtpp.Interfaces
         LiquidacionesByOp LiquidacionesPayPending();
         IEnumerable<LiquidacionesLotePago> LiquidacionesPay(List<LiquidacionPay> liquidaciones);
         bool SacLiquida(int semestre, int año, string operador);
-        bool SacConfirma(int semestre, int año, string operador); 
+        bool SacConfirma(int semestre, int año, string operador);
         bool SacReabre(int semestre, int año, string operador);
         IEnumerable<LiquidacionesLotePago> SacPay(List<LiquidacionPay> liquidaciones);
-        SacByPeriodo  GetSacByPeriodo(int? año=null);
+        SacByPeriodo GetSacByPeriodo(int? año = null);
     }
 }
 
