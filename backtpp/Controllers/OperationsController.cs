@@ -2,6 +2,7 @@
 using backtpp.Helpers;
 using backtpp.Interfaces;
 using backtpp.Models;
+using backtpp.Modelsdto.Operations;
 using backtpp.Modelsdtos.Operations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ namespace backtpp.Controllers
     public class OperationsController : ControllerBase
     {
         private readonly IOperationService _operationService;
+        private readonly IGenericService<Operacion> _genOperacionService;
         private readonly IGenericService<OperacionManiobra> _genericOperacionManiobraService;
         private readonly ILoggService _loggService;
         private readonly IMapper _mapper;
@@ -21,9 +23,16 @@ namespace backtpp.Controllers
         private readonly string _userName;
         private readonly int _userPerfil;
 
-        public OperationsController(IOperationService operationService, ILoggService loggService, IGenericService<OperacionManiobra> genericOperacionManiobraService, IMapper mapper, SecurityService securityService)
+        public OperationsController(
+            IOperationService operationService,
+            IGenericService<Operacion> genOperacionService,
+            ILoggService loggService, 
+            IGenericService<OperacionManiobra> genericOperacionManiobraService, 
+            IMapper mapper, 
+            SecurityService securityService)
         {
             _operationService = operationService;
+            _genOperacionService= genOperacionService;
             _loggService = loggService;
             _genericOperacionManiobraService = genericOperacionManiobraService;
             _mapper = mapper;
@@ -31,6 +40,44 @@ namespace backtpp.Controllers
             _userName = _securityService.GetUserAuthenticated();
             _userPerfil = _securityService.GetPerfilAuthenticated();
         }
+
+        [HttpPut]
+        [Route("AddOperacion")]
+        public IActionResult AddOperacion([FromForm] OperationInsert operacionModel)
+        {
+            try
+            {
+                Operacion? operacion = _mapper.Map<Operacion>(operacionModel);
+                _operationService.Add(operacion);
+                _loggService.Log("Operacion Ingresada", "Operaciones", "Add", _userName);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log("Error tratando de Ingresar Operacion", "Operaciones", "Add", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
+        [HttpDelete]
+        [Route("DeleteOperacion")]
+        public IActionResult DeleteOperacion(long operacion)
+        {
+            try
+            {
+                _genOperacionService.Delete(operacion);
+                _loggService.Log("Operacion Eliminada", "Operaciones", "Delete", _userName);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log("Error tratando de DeleteOperacion", "Operaciones", "Delete", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
 
         [HttpGet]
         public IActionResult GetAll(bool activas)

@@ -67,8 +67,7 @@ builder.Services.AddAuthentication(x =>
 });
 
 // configure DI for application services
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IUserService, UserService>(); 
 builder.Services.AddScoped<IOperationService, OperationService>();
 builder.Services.AddScoped<ICompositionService, CompositionService>();
 builder.Services.AddScoped<ILoggService, LoggService>();

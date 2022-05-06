@@ -20,7 +20,9 @@ namespace backtpp.Services
 
         public Operacion Add(Operacion operacion)
         {
-            throw new NotImplementedException();
+            _context.Operacions.Add(operacion);
+            _context.SaveChanges();
+            return operacion;
         }
 
         public IEnumerable<OperationModel> GetAll(bool? finalizada = false)
