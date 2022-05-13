@@ -6,6 +6,7 @@ using backtpp.Modelsdtos.Operations;
 using backtpp.Modelsdtos.Commons;
 using backtpp.Modelsdtos.Users;
 using backtpp.Modelsdto.Operations;
+using backtpp.Modelsdto.Customers;
 
 namespace backtpp.Helpers
 {
@@ -41,6 +42,8 @@ namespace backtpp.Helpers
             CreateMap<OpConcepto, CompositionJornales>().ReverseMap();
 
             CreateMap<Operacion, OperationInsert>().ReverseMap();
+
+            CreateMap<Cliente, CustomerAdd>().ReverseMap();
         }
     }
 }
