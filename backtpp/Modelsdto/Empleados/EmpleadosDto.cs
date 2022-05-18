@@ -7,7 +7,7 @@
         public string Nombre { get; set; }
         public string Domicilio { get; set; }
         public string Telefono { get; set; }
-        public string Ciudad { get; set; }
+        public int Ciudad { get; set; }
         public long? OSocial { get; set; }
         public DateTime Nacimiento { get; set; }
         public bool Conyuge { get; set; }

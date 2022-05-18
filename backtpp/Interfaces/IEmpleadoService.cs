@@ -5,7 +5,7 @@ namespace backtpp.Interfaces
 {
     public interface IEmpleadoService
     {
-        IEnumerable<EmpleadosDto> GetAll(bool? activo);
+        IEnumerable<EmpleadosDto> GetAll(bool? activo, int? puerto);
         bool Add(EmpleadosAdd empleado);
         bool Update(OpEmpleado empleado);
         void Delete(long id);

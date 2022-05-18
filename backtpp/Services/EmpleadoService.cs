@@ -26,6 +26,7 @@ namespace backtpp.Services
                 Params.Add(new SqlParameter("@cuilCbu", empleado.CuilCbu));
                 Params.Add(new SqlParameter("@nombre", empleado.Nombre));
                 Params.Add(new SqlParameter("@sexo", empleado.Sexo));
+                Params.Add(new SqlParameter("@ciudad", empleado.Ciudad));
                 _storeProcedure.ExecuteNonQuery("EmpleadosAdd", Params);
                 return true;
 
@@ -132,7 +133,7 @@ namespace backtpp.Services
             }
         }
 
-        public IEnumerable<EmpleadosDto> GetAll(bool? activo)
+        public IEnumerable<EmpleadosDto> GetAll(bool? activo, int? puerto)
         {
             try
             {
@@ -140,6 +141,10 @@ namespace backtpp.Services
                 if (activo != null)
                 {
                     Params.Add(new SqlParameter("@activo", activo));
+                }
+                  if (puerto != null)
+                {
+                    Params.Add(new SqlParameter("@puerto", puerto));
                 }
 
                 DataTable dt = _storeProcedure.SpWhithDataSet("EmpleadosGetAll", Params);
@@ -153,7 +158,7 @@ namespace backtpp.Services
                         Nombre = row["Nombre"].ToString(),
                         Domicilio = row["Domicilio"].ToString(),
                         Telefono = row["Telefono"].ToString(),
-                        Ciudad = row["Ciudad"].ToString(),
+                        Ciudad = (int)row["Ciudad"],
                         OSocial = Convert.IsDBNull(row["OSocial"]) ? null : (long)row["OSocial"],
                         Nacimiento = (DateTime)row["Nacimiento"],
                         Conyuge = (bool)row["Conyuge"],

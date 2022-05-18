@@ -1,4 +1,7 @@
-﻿namespace backtpp.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace backtpp.Models
 {
     public partial class OpEmpleado
     {
@@ -14,7 +17,7 @@
         public string Nombre { get; set; } = null!;
         public string Domicilio { get; set; } = null!;
         public string Telefono { get; set; } = null!;
-        public string Ciudad { get; set; } = null!;
+        public int Ciudad { get; set; }
         public long Osocial { get; set; }
         public DateTime Nacimiento { get; set; }
         public bool Conyuge { get; set; }
@@ -26,6 +29,7 @@
         public DateTime Ingreso { get; set; }
         public string Sexo { get; set; } = null!;
 
+        public virtual OpPuerto CiudadNavigation { get; set; } = null!;
         public virtual ObraSocial OsocialNavigation { get; set; } = null!;
         public virtual ICollection<Liquidacion> Liquidacions { get; set; }
         public virtual ICollection<OpEmpleadoEmbargo> OpEmpleadoEmbargoes { get; set; }

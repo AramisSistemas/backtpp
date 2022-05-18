@@ -1,4 +1,7 @@
-﻿namespace backtpp.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace backtpp.Models
 {
     public partial class OpPuesto
     {

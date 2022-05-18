@@ -40,7 +40,8 @@ namespace backtpp.Services
                     Destino = row["Destino"].ToString(),
                     Cliente = row["Cliente"].ToString(),
                     Esquema = row["Esquema"].ToString(),
-                    IdEsquema = (int)row["IdEsquema"]
+                    IdEsquema = (int)row["IdEsquema"],
+                    Puerto = (int)row["Puerto"]
                 });
             }
             return lst;

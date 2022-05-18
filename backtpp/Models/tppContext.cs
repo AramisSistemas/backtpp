@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace backtpp.Models
 {
@@ -29,6 +32,7 @@ namespace backtpp.Models
         public virtual DbSet<OpEmpleado> OpEmpleados { get; set; } = null!;
         public virtual DbSet<OpEmpleadoEmbargo> OpEmpleadoEmbargoes { get; set; } = null!;
         public virtual DbSet<OpManiobra> OpManiobras { get; set; } = null!;
+        public virtual DbSet<OpPuerto> OpPuertos { get; set; } = null!;
         public virtual DbSet<OpPuesto> OpPuestos { get; set; } = null!;
         public virtual DbSet<Operacion> Operacions { get; set; } = null!;
         public virtual DbSet<OperacionManiobra> OperacionManiobras { get; set; } = null!;
@@ -42,6 +46,15 @@ namespace backtpp.Models
         public virtual DbSet<UserOperation> UserOperations { get; set; } = null!;
         public virtual DbSet<UserPerfil> UserPerfils { get; set; } = null!;
         public virtual DbSet<UserPerfilOperation> UserPerfilOperations { get; set; } = null!;
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Server=RICARDO\\SERVER;Database=tpp;Trusted_Connection=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -143,6 +156,14 @@ namespace backtpp.Models
                 entity.Property(e => e.Detalle)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Puerto).HasDefaultValueSql("((1))");
+
+                entity.HasOne(d => d.PuertoNavigation)
+                    .WithMany(p => p.Esquemas)
+                    .HasForeignKey(d => d.Puerto)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Esquema_Puerto");
             });
 
             modelBuilder.Entity<Feriado>(entity =>
@@ -350,10 +371,7 @@ namespace backtpp.Models
                     .IsUnicode(false)
                     .HasDefaultValueSql("('0')");
 
-                entity.Property(e => e.Ciudad)
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasDefaultValueSql("(' ')");
+                entity.Property(e => e.Ciudad).HasDefaultValueSql("((3))");
 
                 entity.Property(e => e.Domicilio)
                     .HasMaxLength(50)
@@ -384,6 +402,12 @@ namespace backtpp.Models
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasDefaultValueSql("(' ')");
+
+                entity.HasOne(d => d.CiudadNavigation)
+                    .WithMany(p => p.OpEmpleados)
+                    .HasForeignKey(d => d.Ciudad)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_OpEmpleado_Ciudad");
 
                 entity.HasOne(d => d.OsocialNavigation)
                     .WithMany(p => p.OpEmpleados)
@@ -425,6 +449,15 @@ namespace backtpp.Models
                     .IsUnique();
 
                 entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Detalle)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<OpPuerto>(entity =>
+            {
+                entity.ToTable("OpPuerto");
 
                 entity.Property(e => e.Detalle)
                     .HasMaxLength(50)

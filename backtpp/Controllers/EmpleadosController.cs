@@ -15,24 +15,33 @@ namespace backtpp.Controllers
     {
         private readonly IEmpleadoService _empleadoService;
         private readonly IGenericService<ObraSocial> _obraSocial;
+        private readonly IGenericService<OpPuerto> _ciudad;
         private readonly ILoggService _loggService;
         private readonly SecurityService _securityService;
         private readonly IMapper _mapper;
         private readonly string _userName;
-        public EmpleadosController(IEmpleadoService empleadoService, ILoggService loggService, SecurityService securityService, IMapper mapper, IGenericService<ObraSocial> obraSocial)
+        public EmpleadosController(
+            IEmpleadoService empleadoService,
+            ILoggService loggService, 
+            SecurityService securityService, 
+            IMapper mapper, 
+            IGenericService<ObraSocial> obraSocial,
+            IGenericService<OpPuerto> ciudad
+            )
         {
             _securityService = securityService;
             _empleadoService = empleadoService;
             _obraSocial = obraSocial;
+            _ciudad =  ciudad;
             _loggService = loggService;
             _userName = _securityService.GetUserAuthenticated();
             _mapper = mapper;
         }
 
         [HttpGet]
-        public IActionResult GetAll(bool? activo)
+        public IActionResult GetAll(bool? activo=null, int? puerto=null)
         {
-            IEnumerable<EmpleadosDto>? data = _empleadoService.GetAll(activo);
+            IEnumerable<EmpleadosDto>? data = _empleadoService.GetAll(activo,puerto);
             return Ok(data);
         }
 
@@ -167,6 +176,14 @@ namespace backtpp.Controllers
         public IActionResult GetOsocial()
         {
             IEnumerable<ObraSocial>? data = _obraSocial.Get();
+            return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("GetCiudades")]
+        public IActionResult GetCiudades()
+        {
+            IEnumerable<OpPuerto>? data = _ciudad.Get();
             return Ok(data);
         }
 

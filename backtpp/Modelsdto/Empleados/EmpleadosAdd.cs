@@ -7,6 +7,7 @@
         public string Cbu { get; set; } = null!;
         public long? CuilCbu { get; set; }
         public string Sexo { get; set; }
+        public int Ciudad { get; set; }
 
     }
 }

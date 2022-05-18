@@ -8,5 +8,6 @@
         public string Cliente { get; set; }
         public string Esquema { get; set; }
         public int IdEsquema { get; set; }
+        public int Puerto { get; set; }
     }
 }
