@@ -96,6 +96,24 @@ namespace backtpp.Controllers
             }
         }
 
+        [HttpPut]
+        [Route("AddDestinos")]
+        public IActionResult AddDestinos([FromForm] OpDestino destino)
+        {
+             try
+            {
+                _destinoGenService.Add(destino);
+                _loggService.Log($"Alta de {destino.Detalle}", "Destinos", "Insert", _userName);
+                return Ok("Alta Correcta");
+            }
+            catch (Exception ex)
+            {
+                _loggService.Log($"Error tratando de Ingresar a {destino.Detalle}", "Destinos", "Insert", _userName);
+                // return error message if there was an exception
+                return BadRequest(new { message = ex.InnerException is not null ? ex.InnerException.Message : ex.Message });
+            }
+        }
+
         [HttpGet]
         [Route("GetResponsabilidades")]
         public IActionResult GetResponsabilidades()
